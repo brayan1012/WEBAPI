@@ -1,0 +1,83 @@
+<div class="modal fade" id="v{{turno}}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{{username}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form action="/users/actualizar/{{_id}}" method="POST" class="row justify-content-center" >
+          <div class="form-group">
+            <input type="email" class="form-control" name="email" id="email" placeholder="Correo" value="{{email}}">
+            </input>
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña" value="">
+            </input>
+            <input type="password" class="form-control invisible" id="Cpassword" name="Cpassword" placeholder="Contraseña" value="{{password}}">
+            </input>
+          </div>
+          <div class="input-group">
+            <div class="form-group inputlarge">
+              Nombre:
+              <input type="text" id="username" name="username" placeholder="Nombre" class="form-control" value="{{username}}"></input>
+            </div>
+            <div class="form-group col-md-3">
+                Roles:
+              <select class="form-control form-select-lg selectAltura" name="roles" id="Rol" aria-label=".form-select-lg size 1" >
+                <option value="Administrador">Administrador</option>
+                <option value="Cliente">Cliente</option>
+                <option value="Vendedor">Vendedor</option>
+              </select>
+            </div>
+          </div>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+      </div>
+      </form>
+          <script>
+            const datoa = {{turno}};
+            const form = document.getElementById(datoa)
+            form.addEventListener('submit', actua)
+            async function actua(event) {
+               alert("linea 56")
+                event.preventDefault()
+                const email = document.getElementById('email').value
+                var passwordx = document.getElementById('password').value
+                const Cpassword = document.getElementById('Cpassword').value
+                const username = document.getElementById('username').value
+                const Rolxe = document.getElementById('Rol').value
+                var Optc = 1;
+                if(passwordx===''){
+                  passwordx= Cpassword;
+                  Optc = 0;
+                }
+               
+                const result = await fetch('/users/actualizar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        password: passwordx,
+                        username: username,
+                        roles: Rolxe,
+                        opt: Optc 
+                    })
+                }).then((res) => res.json());
+
+                if (result.status === 'ok') {
+                    location.assign('/productos');
+                } else {
+                    alert(result.data);
+                    
+                }
+            }
+        </script>
+    </div>
+  </div>
+</div>

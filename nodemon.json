@@ -1,0 +1,6 @@
+{
+    "events": {
+      "restart": "kill-port 3000",
+      "kill-port 3000": "nodemon -L --exec babel-node src/index.js"
+    }
+  }

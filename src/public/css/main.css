@@ -1,0 +1,52 @@
+body {
+    background: #8360c3;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #2ebf91, #8360c3);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #2ebf91, #8360c3);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+.logo{
+    width: 30%;
+    height: 40%;
+}
+footer {
+    min-height: 70px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    
+    
+  }
+.dropdown-menu > .dropdown-item:hover{
+    /*Modifica lo que quieras*/
+    background:rgb(0, 0, 0);
+ }
+.container.containers.p-5{
+    overflow: auto;
+    margin-bottom: 300px;
+}
+
+.redurex{
+    margin-right: 10px;
+}
+
+.card{
+    margin-bottom: 20px;
+}
+.selectAltura {
+    display:flex;
+    height:55px;
+    width:150px;
+  }
+.inputlarge{
+    width: 300px;
+}
+.selectAltura {   
+    font-size: 12pt;   
+    font-family : verdana,arial,helvetica;   
+ }
+.selectAltura2 {
+    padding:20px;
+  }

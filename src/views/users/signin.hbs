@@ -1,0 +1,56 @@
+<div class="row">
+    <div class="col-md-4 mx-auto">
+        <div class="card mt-4 text-center">
+            <div class="card-header">
+                <h1>Inicio de Sesion</h1>
+            </div>
+            <img src="/img/logo.png" class="rounded-circle mx-auto d-block m-4 logo" alt="Logo" <div class="card-body">
+            <div class="card-body">
+                <form id='login' class='/api/auth/signin' method='POST'>
+                    <div class="form-group">
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Email" autofocus>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" name="password" id="password" class="form-control" placeholder="Contraseña">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-block">
+                            Ingresar
+                        </button>
+                    </div>
+                </form>
+                <script>
+                    const form = document.getElementById('login')
+                    form.addEventListener('submit', login)
+
+                    async function login(event) {
+                        event.preventDefault()
+                        const email = document.getElementById('email').value
+                        const password = document.getElementById('password').value
+
+                        const result = await fetch('/api/auth/signin', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                email,
+                                password
+                            })
+                        }).then((res) => res.json());
+
+                        if (result.status === 'ok') {
+                            // everythign went fine
+                            localStorage.setItem('token', result.data)
+                            location.assign('/productos');
+                        } else {
+                            location.reload();
+                        }
+                    }
+                </script>
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>

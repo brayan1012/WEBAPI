@@ -1,0 +1,75 @@
+
+
+<div class="contenedorx row">
+ {{#if user}}
+    {{#each productox}}
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                
+                <h4 class="card-title d-flex justify-content-between align-items-center">
+                    <center>{{name}}</center> {{#if existe}}<a href="/products/edit/{{_id}}"><i class="fas fa-edit"></i></a> {{/if}}
+                </h4>
+                {{#if imgURL}}
+                <p><img src='{{imgURL}}' class="img-fluid"></p>
+                {{else}}
+                <p><center>NO IMAGE FOUND</center></p>
+                {{/if}}
+                <p><center><h3>{{category}}</h3></center></p>
+                <p><center>{{price}}</center></p>
+                <p><center>En Stock: {{cantidad}}</center></p>
+                {{#if existe}}
+                {{else}}
+                 <p><center>Publicado Por: {{usuario}}</center></p>
+                {{/if}}
+                
+                <form action="/api/products/{{_id}}?_method=DELETE" method="POST">
+                    <input type="hidden" name="_method" value="DELETE">
+                     <div class="form-group">
+                     {{#if existe}}
+                      Cantidad a borrar:
+                      {{else}}
+                      Cantidad a Comprar:
+                      {{/if}}
+                    <input type="number" name="cantidad" min="1" max = {{cantidad}} id="cantidad" class="form-control" placeholder="" value=1>
+                  </div>
+                  {{#if existe}}
+                   <button class="btn btn-danger btn-block btn-sm" >
+                        Eliminar
+                    </button>
+                  {{else}}
+                    <a  id="btn1" class="btn btn-success btn-block btn-sm" href="#v{{number}}" data-toggle="modal" onclick="recibir();">
+                        Comprar
+                    </a>
+                  {{/if}}
+                </form>
+            </div>
+        </div>
+    </div>
+    {{>modal2}}
+    {{else}}
+    <div class="card mx-auto">
+        <div class="card-body">
+            <p class='lead'>No Tenemos Productos.</p>
+            {{#if rols}}
+            <a href="/productos/add" class="btn btn-success btn=block">Nuevo Producto!</a>
+            {{/if}}
+            {{#if rol}}
+            <a href="/productos/add" class="btn btn-success btn=block">Nuevo Producto!</a>
+            {{/if}}
+        </div>
+    </div>
+
+    {{/each}}
+    {{else}}
+    <meta http-equiv="refresh" content="0;URL=/sesionoff">
+    {{/if}}
+<script>
+
+    function recibir(1)
+    {
+    var valor = document.getElementById("cantidad").value;
+    console.log(valor)
+    } 
+</script>
+</div>

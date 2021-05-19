@@ -1,0 +1,58 @@
+<div class="container container--fluid fill-height">
+  {{#if user}}
+  <nav class="navbar navbar-light bg-light justify-content-between">
+    <a class="navbar-brand">USUARIOS</a>
+    <form action = "/users/usuarioss" class="form-inline" method ="POST">
+      <input name ="search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button  class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+    </form>
+
+  </nav>
+  <div class="card">
+  <table class="table table table-striped">
+    <tr>
+      
+      <th scope="col"><form action="/users/usupdf" method="POST"> <button  class="btn btn-outline-warning my-2 my-sm-0" type="submit" >Descargar PDF</button></form> 
+    </th>
+    </tr>
+  </table>
+  </div>
+
+
+
+  <div class="card" id="invoice">
+  <table class="table table table-striped">
+    <thead>
+      <tr>
+        <th scope="col md-4 text-center">Opciones</th>
+        <th scope="col">Nombre de Usuario</th>
+        <th scope="col">Email</th>
+        <th scope="col">Rol</th>
+        <th scope="col">Estado</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each usuario}}
+      <tr>
+        <td class="text-start">
+          <a href="#v{{turno}}" class="btn btn-dark fas fa-edit" data-toggle="modal" style="font-size: 16px;">
+          </a>
+          <a href="/users/actuEST/{{_id}}" type="button" class="btn btn-dark fas fa-save" style="font-size: 16px;">
+          </button>
+        </td>
+        <th scope="row">{{username}}</th>
+        <td>{{email}}</td>
+        <td>{{rol}}</td>
+        <td>{{estadoz}}</td>
+      </tr>
+      {{>modal}}
+{{/each}}
+
+</tbody>
+</table>
+ </div>
+
+   {{else}}
+    <meta http-equiv="refresh" content="0;URL=/sesionoff">
+    {{/if}}
+</div>
