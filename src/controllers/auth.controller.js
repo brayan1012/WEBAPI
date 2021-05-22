@@ -31,14 +31,15 @@ export const signup = async (req, res) => {
       roles,
     });
   } else {
-    const emailUser = await User.findOne({ email: email });
+    email2= email.toLowerCase(); 
+    const emailUser = await User.findOne({ email: email2 });
     if (emailUser) {
       req.flash("error_msg", "Este Correo Ya Esta En Uso.");
       res.redirect("/users/signup");
     } else {
       const newUser = new User({
         username,
-        email,
+        email: email2,
         password: await User.encryptPassword(password),
       });
       if (roles) {
@@ -67,7 +68,7 @@ export const renderSigninForm = (req, res) => res.render("users/signin");
 
 
 export const signin = async (req, res) => {
-  const userFound = await User.findOne({ email: req.body.email }).populate(
+  const userFound = await User.findOne({ email: req.body.email.toLowerCase() }).populate(
     "roles"
   );
   if (!userFound) {
@@ -92,7 +93,6 @@ export const signin = async (req, res) => {
     req.session.mail= token;
     const decoded = jwt.verify(token, config.SECRET);
     req.userId = decoded.id;
-    console.log("first time here", req.userId);
     const user = await User.findById(req.userId).lean();
     const roles = await Role.find({ _id: { $in: user.roles } });
     for (let i = 0; i < roles.length; i++) {

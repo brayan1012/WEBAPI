@@ -3,28 +3,41 @@ import jwt from "jsonwebtoken";
 import productoz from '../models/Product'
 import User from "../models/User";
 import config from "../config";
-import Ventas from "../models/Venta";
 import Venta from "../models/Venta";
 
 const router = require('express').Router();
 
 router.get('/productos', async (req,res)=>{
     const product = await productoz.find().sort({date: 'desc'}).lean();
+    const ventas = await Venta.find().sort({date: 'desc'}).lean();
     const  token  = req.session.mail;
-    const decoded = jwt.verify(token, config.SECRET);
-    req.userId = decoded.id;
-    const user = await User.findById(req.userId).lean();
-    for (let i = 0; i < product.length; i++) {
-        product[i].number=i;
-        product[i].price1 = formatterPeso.format(product[i].price);
-        if(product[i].email===user.email){
-            product[i].existe="SI";
-        }
-        product[i].userx=user.username;
-        product[i].emailx=user.email;
-    } 
-    
-    res.render('productos/all-product', {productox: product});
+    if(token){
+        const decoded = jwt.verify(token, config.SECRET);
+        req.userId = decoded.id;
+        const user = await User.findById(req.userId).lean();
+        var Nrecib = 0;
+        for (let i = 0; i < product.length; i++) {
+            product[i].number=i;
+            product[i].price1 = formatterPeso.format(product[i].price);
+            if(product[i].email===user.email){
+                product[i].existe="SI";
+            }
+            product[i].userx=user.username;
+            product[i].emailx=user.email;
+            if(ventas){
+                Nrecib= ventas.length;
+                product[i].Nrecibo=Nrecib;
+            }else{
+                Nrecib=1;
+                product[i].Nrecibo=Nrecib;
+            }
+        } 
+        res.render('productos/all-product', {productox: product});
+    }else{
+        req.flash('error_msg', 'Se ha Cerrado la Sesion');
+        res.redirect('/');
+    }
+
 });
 router.get('/sesionoff', async (req,res)=>{
     req.flash('error_msg', 'Se ha Cerrado la Sesion');
