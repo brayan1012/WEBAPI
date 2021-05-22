@@ -1,18 +1,137 @@
 <div class="modal fade" id="v{{number}}">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-               
-                <div class="input-group-append">
-                    <a href="" class="btn btn--outline-secondary fas fa-print redurex"></a><h5 class="modal-title" id="exampleModalLabel">Factura</h5>
-                </div>
-                </div>
-                <img src="img/logo.png" width="200" height="100"/>
-                <h5>Producto: {{name}}</h5>
-                <br>
+            <div class="modal-header ">
 
-                Cantidad: {{valor}}
+                <div class="input-group-append">
+                    <a id="dfactura{{_id}}" class="btn btn--outline-secondary fas fa-print redurex"></a>
+
+                    <h5 class="modal-title" id="exampleModalLabel">Factura</h5>
+                </div>
             </div>
+            <div id="pfactura">
+                <center><img src="img/logo.png" width="200" height="100" /></center>
+                <center>
+                    <h5>COMPRA&VENTA</h5>
+                </center>
+                <br>
+                <div class="part1 marginai">
+
+                    <b>Sr(a).{{userx}}</b>
+                    <br>
+                    <b>Email: {{emailx}}</b>
+
+                </div>
+                <section>
+                    <div>
+                        <table class="table caption-top">
+                            <caption class="marginai">Factura #4444-4444</caption>
+                            <thead>
+                                <tr class="reformed">
+                                    <th scope="col">Cantidad</th>
+                                    <th scope="col">DESCRIPCION</th>
+                                    <th scope="col">PRECIO UNIT</th>
+                                    <th scope="col">DESC.</th>
+                                    <th scope="col">PRECIO TOTAL.</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="reformed2">
+                                    <th scope="row"><label id="record{{number}}"></label></th>
+                                    <td>{{name}}</td>
+                                    <td>{{price1}}</td>
+                                    <td>$ 10.000</td>
+                                    <td><label id="record2{{number}}"></label></td>
+                                </tr>
+                            </tbody>
+                            <tfoot class="reformed">
+                                <tr>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                    <th scope="col">SUBTOTAL</th>
+                                    <th scope="col"><label id="record3{{number}}"></label></th>
+                                </tr>
+                                <tr>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                    <th scope="col">IVA(0.19)</th>
+                                    <th scope="col"><label id="record4{{number}}"></label></th>
+                                </tr>
+                                <tr>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                    <th scope="col">TOTAL</th>
+                                    <th scope="col"><label id="record5{{number}}"></label></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </section>
+            </div>
+
+            <div class="part1 marginai2">
+                <form id="login{{_id}}" method="POST">
+                <button type="submit" id="Comprast{{_id}}" class="btn btn-success btn-sm">Realizar Compra</button>
+                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cerrar</button>
+                </form>
+            </div>
+
         </div>
     </div>
+    <script>
+        document.getElementById("Comprast{{_id}}")
+        .addEventListener("click", () => {
+            const invoice = this.document.getElementById("pfactura");
+            console.log(invoice);
+            console.log(window);
+            var opt = {
+                margin: 1,
+                filename: 'Factura{{_id}}.pdf',
+                image: { type: 'jpeg', quality: 0.90 },
+                html2canvas: { scale: 3 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+            html2pdf().from(invoice).set(opt).save();
+        });
+        var form2 = document.getElementById('login{{_id}}')
+        form2.addEventListener('submit', login);
+
+        async function login(event) {
+
+            event.preventDefault()
+
+                var Vendedor = "{{usuario}}";
+                var Cliente = "{{userx}}";
+                var idprod = "{{_id}}";
+                var Nomprod = "{{name}}";
+                var precio = "{{price}}";
+                var Total = document.getElementById('record5{{number}}').innerHTML;
+                var Cantidad = document.getElementById('record{{number}}').innerHTML;
+            const result = await fetch('/products/buy', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                        Vendedor: Vendedor,
+                        Cliente: Cliente,
+                        Total: Total,
+                        Cantidad: Cantidad,
+                        idprod: idprod,
+                        Nomprod: Nomprod,
+                        Precio: precio
+                })
+            }).then((res) => res.json());
+
+                        if (result.status === 'ok') {
+                            location.assign('/productos');
+                        } else {
+                            location.reload();
+                        }
+        }
+
+    </script>
 </div>

@@ -28,10 +28,9 @@ export const createProduct = async (req,res)=>{
             res.json({status:ok})
         }
         console.log(newProduct);
-        const buscar = await Categoria.findOne({ category: category});
+        const buscar = await Categoria.findOne({ categoria: category});
         console.log('lo encontrado de la categoria es: ',buscar);
         if(!buscar){
-            
             const newCate= new Categoria({categoria: category});
             console.log(newCate);
             const CategoriaSaved= await newCate.save();

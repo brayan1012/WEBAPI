@@ -16,8 +16,8 @@ import index from './routes';
 import Chart from 'chart.js';
 import killport from 'killport'
 import "./config/passport"
-import PDF from 'pdfkit';
-import fs from 'fs';
+import PDF from 'pdfkit'
+import fs from 'fs'
 import { kill } from 'process';
 //iniciacion app
 const app = express();

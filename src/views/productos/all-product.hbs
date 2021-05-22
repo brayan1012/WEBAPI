@@ -1,52 +1,109 @@
-
-
 <div class="contenedorx row">
- {{#if user}}
+    {{#if user}}
     {{#each productox}}
     <div class="col-md-3">
         <div class="card">
             <div class="card-body">
-                
+
                 <h4 class="card-title d-flex justify-content-between align-items-center">
-                    <center>{{name}}</center> {{#if existe}}<a href="/products/edit/{{_id}}"><i class="fas fa-edit"></i></a> {{/if}}
+                    <center>{{name}}</center> {{#if existe}}<a href="/products/edit/{{_id}}"><i
+                            class="fas fa-edit"></i></a> {{/if}}
                 </h4>
                 {{#if imgURL}}
                 <p><img src='{{imgURL}}' class="img-fluid"></p>
                 {{else}}
-                <p><center>NO IMAGE FOUND</center></p>
+                <p>
+                    <center>NO IMAGE FOUND</center>
+                </p>
                 {{/if}}
-                <p><center><h3>{{category}}</h3></center></p>
-                <p><center>{{price}}</center></p>
-                <p><center>En Stock: {{cantidad}}</center></p>
+                <p>
+                    <center>
+                        <h3>{{category}}</h3>
+                    </center>
+                </p>
+                <p>
+                    <center><label for="" id="precio1">{{price1}}</label></center>
+                </p>
+                <p>
+                    <center>En Stock: {{cantidad}}</center>
+                </p>
                 {{#if existe}}
                 {{else}}
-                 <p><center>Publicado Por: {{usuario}}</center></p>
+                <p>
+                    <center>Publicado Por: {{usuario}}</center>
+                </p>
                 {{/if}}
-                
+
                 <form action="/api/products/{{_id}}?_method=DELETE" method="POST">
                     <input type="hidden" name="_method" value="DELETE">
-                     <div class="form-group">
-                     {{#if existe}}
-                      Cantidad a borrar:
-                      {{else}}
-                      Cantidad a Comprar:
-                      {{/if}}
-                    <input type="number" name="cantidad" min="1" max = {{cantidad}} id="cantidad" class="form-control" placeholder="" value=1>
-                  </div>
-                  {{#if existe}}
-                   <button class="btn btn-danger btn-block btn-sm" >
+                    <div class="form-group">
+                        {{#if existe}}
+                        Cantidad a borrar:
+                        {{else}}
+                        Cantidad a Comprar:
+                        {{/if}}
+                        <input type="number" name="cantidad" min="1" max={{cantidad}} id="{{_id}}" class="form-control"
+                            placeholder="" value=1>
+                    </div>
+                    {{#if existe}}
+                    <button class="btn btn-danger btn-block btn-sm">
                         Eliminar
                     </button>
-                  {{else}}
-                    <a  id="btn1" class="btn btn-success btn-block btn-sm" href="#v{{number}}" data-toggle="modal" onclick="recibir();">
+                    {{else}}
+                    <a id="btn1{{_id}}" class="btn btn-success btn-block btn-sm" href="#v{{number}}" data-toggle="modal">
                         Comprar
                     </a>
-                  {{/if}}
+                    {{/if}}
                 </form>
+                         
+ 
             </div>
+            
         </div>
-    </div>
-    {{>modal2}}
+         {{>modal2}} 
+       <script>
+           var el= document.getElementById("btn1{{_id}}");
+           if(el){
+               el.addEventListener("click", () => {
+                    var newprice= "{{price}}";
+                    var valor = document.getElementById("{{_id}}").value;
+                     newprice= valor*newprice;
+                     newprice= newprice-10000;
+                    var iva = (newprice*19)/100;
+                    var precsiniva = newprice-iva;
+                    var ivas = formatterPeso.format(iva);
+                    var prectotal= formatterPeso.format(newprice);
+                    var precant= formatterPeso.format(precsiniva);
+                    document.getElementById("record{{number}}").innerHTML= valor;
+                    document.getElementById("record2{{number}}").innerHTML= prectotal;
+                    document.getElementById("record3{{number}}").innerHTML = precant;
+                    document.getElementById("record4{{number}}").innerHTML = ivas;
+                    document.getElementById("record5{{number}}").innerHTML= prectotal;
+                });
+         } 
+        var formatterPeso = new Intl.NumberFormat('es-CO', {
+         style: 'currency',
+         currency: 'COP',
+         minimumFractionDigits: 0
+        });
+     document.getElementById("dfactura{{_id}}")
+        .addEventListener("click", () => {
+            const invoice = this.document.getElementById("pfactura");
+            console.log(invoice);
+            console.log(window);
+            var opt = {
+                margin: 1,
+                filename: 'Factura.pdf',
+                image: { type: 'jpeg', quality: 0.90 },
+                html2canvas: { scale: 3 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+            html2pdf().from(invoice).set(opt).save();
+        });
+
+    </script>
+ 
+    </div> 
     {{else}}
     <div class="card mx-auto">
         <div class="card-body">
@@ -63,13 +120,5 @@
     {{/each}}
     {{else}}
     <meta http-equiv="refresh" content="0;URL=/sesionoff">
-    {{/if}}
-<script>
-
-    function recibir(1)
-    {
-    var valor = document.getElementById("cantidad").value;
-    console.log(valor)
-    } 
-</script>
+ {{/if}}
 </div>
